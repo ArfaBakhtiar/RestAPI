@@ -1,9 +1,13 @@
 package gpApiTests;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
 import java.util.Date;
 
 import org.testng.ITestResult;
+import org.testng.Reporter;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
@@ -24,9 +28,17 @@ public class BaseTest {
     
     
     @BeforeSuite
-    public void setttingUpReportConfig() {
+    public void setttingUpReportConfig() throws IOException {
         Date date= new Date();
-        htmlReporter= new ExtentHtmlReporter("ogs-test-reports/OgsTestReport"+date+".html");
+        String d=date.toString().replaceAll(":", "-");
+        Reporter.log("Date:"+date,true);
+        
+        Reporter.log("STarted",true);
+        
+        File file=new File(".\\ogs-test-reports\\ogsTestreport"+d+".html");
+        Reporter.log("Directory path==="+file.getAbsolutePath(),true);
+        Reporter.log("file created...."+file.createNewFile(),true);
+        htmlReporter= new ExtentHtmlReporter(file);
         extent= new ExtentReports();
         extent.attachReporter(htmlReporter);
 
